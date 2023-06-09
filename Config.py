@@ -9,11 +9,11 @@ const.StartTime = datetime.datetime.now()
 ####################################################
 # AFPNMR
 # Path name
-#DataDirectryName = "/Data/2023/0608/131Xe_234A_19kHz/run2/"
-DataDirectryName = "/Data/2023/0608/131Xe_100A_19kHz/run2/"
+#DataDirectryName = "/Data/2023/0608/131Xe_234A_19kHz/run1/"
+DataDirectryName = "/Data/2023/0608/131Xe_100A_19kHz/run1/"
 HomePath         = os.path.expanduser("~")
 #DataPath         = HomePath + "/NMRProgram/AFPNMR_FS/" + DataDirectryName
-DataPath         = HomePath + "/research/SpinFilter/FIDNMR/" + DataDirectryName
+DataPath         = HomePath + "/git/FIDNMR/" + DataDirectryName
 GoogleDrivePath  = HomePath + "/マイドライブ/" + DataDirectryName
 
 # File name
