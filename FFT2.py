@@ -82,13 +82,14 @@ frequency_spectrum1_mean = frequency_spectrum1_mean/int(len(file_path)/2)
 frequency_spectrum2_mean = frequency_spectrum2_mean/int(len(file_path)/2)   
 
 
-"""
+#"""
     # フーリエ変換結果のプロット
 fig, ax = plt.subplots(nrows=2)
 #ax[0].plot(frequencies, np.abs(frequency_spectrum), ".")
 ax[0].plot(frequencies1, np.abs(frequency_spectrum1), ".", label="RF Vpp = " + str(150) + "[V]")
-ax[0].set_xlim(17000, 19000)
-ax[0].set_ylim(0, 20)
+#ax[0].set_xlim(17000, 19000)
+ax[0].set_xlim(0, 19000)
+#ax[0].set_ylim(0, 20)
 ax[0].grid()
 ax[0].legend()
 ax[1].plot(time1, voltage1, ".")
@@ -140,6 +141,6 @@ ax[1].plot(frequencies2, frequency_spectrum2_mean, ".")
 ax[1].set_xlim(min_freq, max_freq)
 ax[1].set_ylim(0.0, y_max)
 ax[1].grid()
-#plt.show()
-plt.savefig(dir_path + "amp_compare.pdf")
+plt.show()
+#plt.savefig(dir_path + "amp_compare.pdf")
 
