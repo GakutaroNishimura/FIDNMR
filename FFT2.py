@@ -5,9 +5,12 @@ import glob
 import os
 import time as tm
 
-f_file = 270
-l_file = 271
-V_pp = 90
+f_file = 276
+l_file = 277
+V_pp = 150
+y_max = 5
+min_freq = 18000
+max_freq = 20000
 
 Srow = 10
 Sfooter = 20
@@ -78,7 +81,6 @@ for i in range(int(len(file_path)/2)):
 frequency_spectrum1_mean = frequency_spectrum1_mean/int(len(file_path)/2)
 frequency_spectrum2_mean = frequency_spectrum2_mean/int(len(file_path)/2)   
 
-print(int(len(file_path)/2))
 
 """
     # フーリエ変換結果のプロット
@@ -122,8 +124,6 @@ plt.grid(True)
 plt.show()
 """
 
-min_freq = 17000
-max_freq = 19000
 
 indices = np.where((frequencies1 >= min_freq) & (frequencies1 <= max_freq))
 amplitude = frequency_spectrum1_mean[indices]
@@ -133,12 +133,12 @@ max_amp = np.max(amplitude)
 fig, ax = plt.subplots(nrows=2)
 ax[0].plot(frequencies1, frequency_spectrum1_mean, ".", label="max amplitude = {:.1f}".format(max_amp) + "\n RF $V_{\mathrm{p-p}}$ = %d" %V_pp)
 ax[0].set_xlim(min_freq, max_freq)
-#ax[0].set_ylim(0.0, 20)
+ax[0].set_ylim(0.0, y_max)
 ax[0].grid()
 ax[0].legend()
 ax[1].plot(frequencies2, frequency_spectrum2_mean, ".")
 ax[1].set_xlim(min_freq, max_freq)
-#ax[1].set_ylim(0.0, 10)
+ax[1].set_ylim(0.0, y_max)
 ax[1].grid()
 #plt.show()
 plt.savefig(dir_path + "amp_compare.pdf")
