@@ -8,7 +8,7 @@ import time
 
 
 StartNo = FileInfo.GetMaxFileNumber() + 1
-StopNo  = 30
+StopNo  = conf.NumOfDataAcquisition
 
 file_list = os.listdir(conf.DataPath)
 data_list = []

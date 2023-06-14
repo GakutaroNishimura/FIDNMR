@@ -47,8 +47,8 @@ def InitialSetOsc():
 
     #Osc.write(":TIMebase:RANGe %f" % (conf.NPulse**conf.NSpinFlip))    # ウィンドウの水平方向のフルスケール
     #Osc.write(":TIMebase:DELay %f" % (conf.ModulationTime*conf.NSpinFlip/2.)) # たぶん原点から半分ずらしてるけど何故か正
-    Osc.write(":TIMebase:RANGe %f" % (0.010))    # ウィンドウの水平方向のフルスケール
-    Osc.write(":TIMebase:DELay %f" % (0.012)) # たぶん原点から半分ずらしてるけど何故か正
+    Osc.write(":TIMebase:RANGe %f" % (conf.OscTimeRange))    # ウィンドウの水平方向のフルスケール
+    Osc.write(":TIMebase:DELay %f" % (conf.OscTimeDelay)) # たぶん原点から半分ずらしてるけど何故か正
     # Osc.write(":TRIGger:SWEep Normal")
     # Osc.write(":TRIGger:SWEep Auto")
     Osc.write(":TRIGger:Source Channel%d" % (conf.OscChTrigger))                 # Trigger(FGのSync out)を入れるチャンネル

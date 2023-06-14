@@ -9,11 +9,13 @@ const.StartTime = datetime.datetime.now()
 ####################################################
 # AFPNMR
 # Path name
-DataDirectryName = "/Data/2023/0608/131Xe_234A_19kHz/run2/"
-#DataDirectryName = "/Data/2023/0608/131Xe_100A_19kHz/run1/"
+#DataDirectryName = "/Data/2023/0614/131Xe_234A_19kHz/run1/"
+#DataDirectryName = "/Data/2023/0614/131Xe_100A_19kHz/run1/"
+#DataDirectryName = "/Data/2023/0614/129Xe_069A_19kHz/run9/"
+DataDirectryName = "/Data/2023/0614/129Xe_010A_19kHz/run5/"
 HomePath         = os.path.expanduser("~")
 #DataPath         = HomePath + "/NMRProgram/AFPNMR_FS/" + DataDirectryName
-DataPath         = HomePath + "/git/FIDNMR/" + DataDirectryName
+DataPath         = HomePath + "/research/SpinFilter/FIDNMR/" + DataDirectryName
 GoogleDrivePath  = HomePath + "/マイドライブ/" + DataDirectryName
 
 # File name
@@ -26,6 +28,8 @@ FileNamePeakValuePDF = DataPath + "FitValues.pdf"
 TimeInterval         = 20   # [sec]
 #TimeInterval         = 50      # [sec]
 
+NumOfDataAcquisition = 2
+
 # Option
 OptOverWrite         = 0       # if Opt=1, start file number is forcibly to 1
 OptOnlyLockin        = 0       # Option for only lockin    (Will be used for phase tuning)
@@ -36,8 +40,8 @@ OptBuildRelax        = "R"     # Option for measurement type (Buildup = "B" or R
 ####################################################
 # SpinFlip
 #FGName  = "USB0::0x0D4A::0x000D::9377454::INSTR" #Goto_Cabin
-FGName="USB0::0x0D4A::0x000D::9217876::INSTR" #Noda-san's FG
-#FGName="USB0::0x0D4A::0x000D::9122074::INSTR" #Harada-san's FG
+#FGName="USB0::0x0D4A::0x000D::9217876::INSTR" #Noda-san's FG
+FGName="USB0::0x0D4A::0x000D::9122074::INSTR" #Harada-san's FG
 #FGName="USB0::0x0D4A::0x000D::9289693::INSTR" #Okudaira_sanFG
 #FGName="USB0::0x0D4A::0x000D::9377454::INSTR" #Goto_Cabin
 OscName = "USB0::0x0957::0x1798::MY61410321::INSTR"  # New Keysight Oscillo
@@ -53,10 +57,11 @@ RFFrequency     = 19000      # Applied RF Frequency
 NSpinFlip       = 1              # Not used
 FGMemory        = Memory[1]      # Memory number
 #FGVoltage       = 18             # Output voltage [V] Ohtama, ShingoCoil
-FGVoltage       = 6              # Output voltage [V], SmallCoil, NOVACoil
+#FGVoltage       = 6              # Output voltage [V], SmallCoil, NOVACoil
 #FGVoltage       = 1              # Output voltage [V]  Depol
-NPulse          =20              #Number of applied pulse
-Function        ="SIN"           #Applied Function
+FGVoltage       = 11              # Output voltage [V]  FIDNMR
+NPulse          = 20              #Number of applied pulse
+Function        = "SIN"           #Applied Function
 
 
 #-------------------
@@ -67,6 +72,8 @@ OscDataPoint    = 2e5            # Data points
 OscTimeout      = 2000           # Timeout time [ms]
 OscTriggerLevel = 1              # Trigger level [V]
 OscChTrigger    = 3              # Osc channel for the sync out of the function generator
+OscTimeDelay    = 0.031          # Osc time delay
+OscTimeRange    = 0.050          # Osc time range. The range between OscTimeDelay and (OscTimeRange+OscTimeDelay) will be displayed.
 
 #####################################################
 # Lockin

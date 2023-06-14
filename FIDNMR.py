@@ -57,7 +57,7 @@ def main():
     #BinaryFileName = ["", ""]
     BinaryFileName = [""]
     StartNo = FileInfo.GetMaxFileNumber() + 1
-    StopNo  = 30
+    StopNo  = conf.NumOfDataAcquisition
     nLoop   = 1
     # Over Write mode
     if conf.OptOverWrite:
