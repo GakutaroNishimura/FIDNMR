@@ -94,7 +94,7 @@ def main():
     print(BinaryFileList)
     
     # Loop start
-    for iLoop in range(StartNo, StopNo):
+    for iLoop in range(StartNo, StopNo+1):
         print("Loop {0} start ----------------".format(nLoop))
         # File name
         if conf.OptOnlyLockin:
@@ -139,8 +139,8 @@ def main():
             freq_spectrum_mean = np.array([0.0 for i in range(Ndata)])
         freq_spectrum_mean += np.abs(frequency_spectrum)
 
-        if iLoop == StopNo-1:
-            freq_spectrum_mean = freq_spectrum_mean/(StopNo-1)
+        if iLoop == StopNo:
+            freq_spectrum_mean = freq_spectrum_mean/StopNo
             plt.plot(frequencies, freq_spectrum_mean, ".")
             plt.xlim(16000, 22000)
             plt.ylim(0, 12)
