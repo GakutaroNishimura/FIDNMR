@@ -235,7 +235,7 @@ def DataOutputToPeakValueFile(PeakValue, PeakValueError, BinaryFileName):
     header = FileInfo.addHeader(conf.FileNamePeakValue)
     df.to_csv(conf.FileNamePeakValue, mode="a", header=header, index=False)
     
-def fft(BinaryFileName, V, Time):
+def fft(V, Time):
     Ndata = len(V)
     sampling_rate = 1 / (Time[1] - Time[0])  # 時刻の間隔からサンプリング周波数を求める
     V -= np.mean(V)

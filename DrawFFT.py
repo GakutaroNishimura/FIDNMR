@@ -4,6 +4,7 @@ import FileInfo
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import time
 
 
 StartNo = FileInfo.GetMaxFileNumber() + 1
@@ -20,10 +21,14 @@ for i in range(len(file_list)):
 for i in range(len(data_list)):
     BinaryFileName = data_list[i]
     V, Time = Lockin.Lockin(BinaryFileName)
-    Ndata, frequency_spectrum, frequencies = Lockin.fft(BinaryFileName, V, Time)
-    print("%d th data analyzed" %i)
     if i == 0:
-        freq_spectrum_mean = np.array([0.0 for i in range(Ndata)])
+        print("t_min = %f" %Time[0])
+        plt.plot(Time, V, ".")
+        plt.show()
+        time.sleep(1000)
+    Ndata, frequency_spectrum, frequencies = Lockin.fft(V, Time)
+    print("%d th data was transformed" %i)
+    if i == 0: freq_spectrum_mean = np.array([0.0 for i in range(Ndata)])
     freq_spectrum_mean += np.abs(frequency_spectrum)
 
 freq_spectrum_mean = freq_spectrum_mean/(StopNo-1)
