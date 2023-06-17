@@ -2,20 +2,31 @@ import math
 import datetime
 import os
 import Const as const
+import FileInfo
 
 # start time
 const.StartTime = datetime.datetime.now()
+t = datetime.datetime.now()
+year = t.year
+month = t.month
+day = t.day
+
 
 ####################################################
 # AFPNMR
 # Path name
-DataDirectryName = "/Data/2023/0608/131Xe_234A_19kHz/run2/"
-#DataDirectryName = "/Data/2023/0608/131Xe_100A_19kHz/run1/"
-#DataDirectryName = "/Data/2023/0614/129Xe_069A_19kHz/run9/"
+DirectryNameDate = "/Data/" + str(year) + "/" + str(month).zfill(2) + str(day).zfill(2)
+#DataDirectryName = "/Data/2023/0616/131Xe_234A_19kHz/run1/"
+#DataDirectryName = "/Data/2023/0616/131Xe_100A_19kHz/run1/"
+DataDirectryName = "/131Xe_100A_19kHz/run1/"
+#DataDirectryName = "/Data/2023/0614/129Xe_069A_19kHz/run1/"
+#DataDirectryName = "/Data/2023/0614/129Xe_069A_19kHz/"
+#DataDirectryName = "/Data/2023/0614/129Xe_069A_19kHz/run1/"
 #DataDirectryName = "/Data/2023/0614/129Xe_010A_19kHz/run5/"
 HomePath         = os.path.expanduser("~")
 #DataPath         = HomePath + "/NMRProgram/AFPNMR_FS/" + DataDirectryName
-DataPath         = HomePath + "/git/FIDNMR/" + DataDirectryName
+#DataPath         = HomePath + "/git/FIDNMR/" + DataDirectryName
+DataPath         = "./" + DirectryNameDate + DataDirectryName
 #GoogleDrivePath  = HomePath + "/マイドライブ/" + DataDirectryName
 
 # File name

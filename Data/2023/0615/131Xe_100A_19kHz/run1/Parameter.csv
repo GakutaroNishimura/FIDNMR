@@ -1,0 +1,2 @@
+Time,TimeInterval,Voltage,FunctionGenerator,Oscilloscope,FreqRange
+2023-06-15 17:06:01.770716,20,11,USB0::0x0D4A::0x000D::9122074::INSTR,USB0::0x0957::0x1798::MY61410321::INSTR,"[40000.0, 60000.0]"
