@@ -19,6 +19,7 @@ for i in range(len(file_list)):
 for i in range(len(data_list)):
     BinaryFileName = data_list[i]
     V, Time = Lockin.Lockin(BinaryFileName)
+    print("read %d th data" %i)
     if i == 0:
         plt.plot(Time, V, ".")
         plt.show()
@@ -31,7 +32,7 @@ V_mean = V_mean/len(data_list)
 plt.plot(Time, V_mean)
 plt.show()
 
-Ndata, freq_spectrum_mean, frequencies = Lockin.fft(V_mean[:10000], Time[:10000])
+Ndata, freq_spectrum_mean, frequencies = Lockin.fft(V_mean, Time)
 
 plt.plot(frequencies, np.abs(freq_spectrum_mean), ".")
 plt.xlim(15000, 22000)

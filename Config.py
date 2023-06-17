@@ -11,22 +11,26 @@ year = t.year
 month = t.month
 day = t.day
 
+Save_or_View = "View"
+
 
 ####################################################
 # AFPNMR
 # Path name
-DirectryNameDate = "/Data/" + str(year) + "/" + str(month).zfill(2) + str(day).zfill(2)
-#DataDirectryName = "/Data/2023/0616/131Xe_234A_19kHz/run1/"
-#DataDirectryName = "/Data/2023/0616/131Xe_100A_19kHz/run1/"
-DataDirectryName = "/131Xe_100A_19kHz/run1/"
+if Save_or_View == "Save":
+    DirectryNameDate = "/Data/" + str(year) + "/" + str(month).zfill(2) + str(day).zfill(2)
+    DataDirectryName = "/131Xe_100A_19kHz/run1/"
+    DataPath         = "./" + DirectryNameDate + DataDirectryName
+
+DataDirectryName = "/Data/2023/0616/131Xe_234A_19kHz/run2/"
+#DataDirectryName = "/Data/2023/0616/131Xe_100A_19kHz/run2/"
 #DataDirectryName = "/Data/2023/0614/129Xe_069A_19kHz/run1/"
 #DataDirectryName = "/Data/2023/0614/129Xe_069A_19kHz/"
 #DataDirectryName = "/Data/2023/0614/129Xe_069A_19kHz/run1/"
 #DataDirectryName = "/Data/2023/0614/129Xe_010A_19kHz/run5/"
 HomePath         = os.path.expanduser("~")
 #DataPath         = HomePath + "/NMRProgram/AFPNMR_FS/" + DataDirectryName
-#DataPath         = HomePath + "/git/FIDNMR/" + DataDirectryName
-DataPath         = "./" + DirectryNameDate + DataDirectryName
+DataPath         = HomePath + "/FIDNMR/" + DataDirectryName
 #GoogleDrivePath  = HomePath + "/マイドライブ/" + DataDirectryName
 
 # File name
