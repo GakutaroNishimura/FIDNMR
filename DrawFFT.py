@@ -32,7 +32,7 @@ V_mean = V_mean/len(data_list)
 
 print(type(V_mean))
 
-"""
+#"""
 gr = ROOT.TGraph(len(Time), np.array(Time), np.array(V))
 gr.Draw("APL")
 gr.SetMarkerStyle(7)
@@ -41,7 +41,7 @@ c1 = ROOT.gROOT.FindObject("c1")
 c1.Draw("same")
 c1.Update()
 time.sleep(1000)
-"""
+#"""
 
 #plt.plot(Time, V_mean)
 #plt.show()

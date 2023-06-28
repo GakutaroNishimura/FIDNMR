@@ -42,12 +42,19 @@ def FindFreqLockin(StartF, EndF, Naverage, Time, V_mean):
                     
     return FreqList, LockinList
 
-def FinalLockin(f0, delta, Naverage, Time, V_mean):
-    LockinValue = 0
-    for i in range(Naverage):
-        LockinValue += V_mean[i]*math.cos(2*math.pi*f0*Time[i]+delta)
-        #LockinValue += V_mean[i]*math.cos(2*math.pi*f0*Time[i])
-    return LockinValue
+def FinalLockin(f0, delta, Nstart, Nend, Naverage, Time, V_mean):
+    aveTime = []
+    LockinList = []
+    for  j in range(int((Nend-Nstart)/Naverage)):
+        LockinValue = 0
+        for i in range(j*Naverage, (j+1)*Naverage):
+            t0 = Time[j*Naverage]
+            t1 = Time[(j+1)*Naverage-1]
+            t_ave = (t0+t1)/2
+            LockinValue += V_mean[i]*math.cos(2*math.pi*f0*Time[i]+delta)
+        aveTime.append(t_ave)
+        LockinList.append(LockinValue)
+    return aveTime, LockinList
 
 StartNo = FileInfo.GetMaxFileNumber() + 1
 StopNo  = conf.NumOfDataAcquisition
@@ -73,7 +80,7 @@ for i in range(len(data_list)):
 
 #FreqList, LockinList = FindFreqLockin(17000, 19000, 1000, Time, V_mean)
 
-LockinValue = FinalLockin(18270, 5.394654, 1000, Time, V_mean)
+aveTime, LockinList = FinalLockin(18270, 5.394654, 0, 10000, 1000, Time, V_mean)
 
 """
 fig = plt.figure()
@@ -82,9 +89,14 @@ ax.scatter(FreqList, deltaList, LockinList)
 plt.show()
 """
 
-#"""
+"""
 fig = plt.figure()
 ax = fig.add_subplot()
 ax.scatter(FreqList, LockinList)
 plt.show()
-#"""
+"""
+
+fig = plt.figure()
+ax = fig.add_subplot()
+ax.scatter(aveTime, LockinList)
+plt.show()
