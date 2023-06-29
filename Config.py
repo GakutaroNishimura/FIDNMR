@@ -24,19 +24,21 @@ if Save_or_View == "Save":
     DataPath         = "./" + DirectryNameDate + DataDirectryName
 
 if Bin_or_Float == "Float":
-    #DataDirectryName = "/Data/2023/0616/131Xe_234A_19kHz/run1/floatData.txt/"
-    DataDirectryName = "/Data/2023/0616/131Xe_100A_19kHz/run1/floatData.txt/"
-    #DataDirectryName = "/Data/2023/0615/129Xe_069A_19kHz/run1/floatData.txt/"
-    #DataDirectryName = "/Data/2023/0614/129Xe_067A_18.3kHz/run1/floatData.txt/"
-    #DataDirectryName = "/Data/2023/0614/129Xe_010A_18.3kHz/run1/floatData.txt/"
-    #DataDirectryName = "/Data/2023/0614/129Xe_010A_19kHz/run5/floatData.txt/"
+    DataDirectryName = "/Data/2023/0616/131Xe_234A_19kHz/run2/floatData.txt"
+    #DataDirectryName = "/Data/2023/0616/131Xe_100A_19kHz/run1/floatData.txt"
+    #DataDirectryName = "/Data/2023/0615/129Xe_069A_19kHz/run1/floatData.txt"
+    #DataDirectryName = "/Data/2023/0614/129Xe_067A_18.3kHz/run1/floatData.txt"
+    #DataDirectryName = "/Data/2023/0614/129Xe_010A_18.3kHz/run1/floatData.txt"
+    #DataDirectryName = "/Data/2023/0614/129Xe_010A_19kHz/run5/floatData.txt"
 
-#DataDirectryName = "/Data/2023/0616/131Xe_234A_19kHz/run1/"
-DataDirectryName = "/Data/2023/0616/131Xe_100A_19kHz/run1/"
-#DataDirectryName = "/Data/2023/0615/129Xe_069A_19kHz/run1/"
-#DataDirectryName = "/Data/2023/0614/129Xe_067A_18.3kHz/run1/"
-#DataDirectryName = "/Data/2023/0614/129Xe_010A_18.3kHz/run1/"
-#DataDirectryName = "/Data/2023/0614/129Xe_010A_19kHz/run5/"
+else:
+    #DataDirectryName = "/Data/2023/0608/131Xe_234A_19kHz/run1/"
+    #DataDirectryName = "/Data/2023/0608/131Xe_100A_19kHz/run1/"
+    #DataDirectryName = "/Data/2023/0614/129Xe_069A_19kHz/run1/"
+    #DataDirectryName = "/Data/2023/0614/129Xe_067A_18.3kHz/run1/"
+    #DataDirectryName = "/Data/2023/0614/129Xe_010A_18.3kHz/run1/"
+    DataDirectryName = "/Data/2023/0614/129Xe_010A_19kHz/run"
+
 HomePath         = os.path.expanduser("~")
 #DataPath         = HomePath + "/NMRProgram/AFPNMR_FS/" + DataDirectryName
 DataPath         = HomePath + "/FIDNMR/" + DataDirectryName

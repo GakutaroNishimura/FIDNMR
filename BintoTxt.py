@@ -34,4 +34,4 @@ for j in range(1, 12):
 
     with open(conf.DataPath  + "%i/" %j + argvs[1], "w") as f:
         for i in range(len(Time)):
-            f.write("%f %f \n" %(Time[i], V_mean[i]))
+            f.write("%f %f\n" %(Time[i], V_mean[i]))
