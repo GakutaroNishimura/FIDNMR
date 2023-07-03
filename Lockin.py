@@ -49,7 +49,7 @@ def Lockin(path_w):
                     V.append(VSigtmp)
                     Time.append((NPoint-XYScale[1])*XYScale[2]+XYScale[0])
                     # VRef.append(math.sin(2*math.pi*(dfreq*Time[NPoint]*0.5+ifreq)*Time[NPoint]-1/2*math.pi))
-                    # VLockintempx=VLockintempx+V[NPoint]*math.sin(2*math.pi*(dfreq*Time[NPoint]*0.5+ifreq)*Time[NPoint]+Phase)
+                    #VLockintempx=VLockintempx+V[NPoint]*math.sin(2*math.pi*(dfreq*Time[NPoint]*0.5+ifreq)*Time[NPoint]+Phase)
 
                     """
                     VLockintempx = VLockintempx + \
@@ -61,10 +61,11 @@ def Lockin(path_w):
                         V[NPoint]*math.cos(2*math.pi*
                                            (dfreq*Time[NPoint]*0.5 + conf.FreqRange[0])*Time[NPoint]
                                            + conf.Phase)
+                    """
                     
-                    
-                    # VLockintempy=VLockintempy+V[NPoint]*math.cos(2*math.pi*(dfreq*Time[NPoint]*0.5+ifreq)*Time[NPoint]+Phase)
+                    #VLockintempy=VLockintempy+V[NPoint]*math.cos(2*math.pi*(dfreq*Time[NPoint]*0.5+ifreq)*Time[NPoint]+Phase)
 
+                    """
                     VLockintempy = VLockintempy + \
                         V[NPoint]*math.cos(2*math.pi*(dfreq*Time[NPoint]
                                                       * 0.5+conf.FreqRange[0])*Time[NPoint]+conf.Phase)                    
