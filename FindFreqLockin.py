@@ -13,9 +13,13 @@ import sys
 argvs = sys.argv  
 argc = len(argvs) 
 
+AnalyzeDir = conf.DataPath + "/LockinValue_cos_sin/"
+#AnalyzeDir = conf.DataPath + "/LockinValue_cos/"
+
+os.makedirs(AnalyzeDir, exist_ok=True)
 
 Bin_or_Float = conf.Bin_or_Float
-FreqDeltaNaverage = 30000
+FreqDeltaNaverage = 1000
 FinalNaverage = 1000
 StartF, EndF, dFreq = 18000, 20000, 1
 dDelta = 1000
@@ -53,12 +57,12 @@ def FindFreqLockin(StartF, EndF, dFreq, Naverage, Time, V_mean):
             #LockinValue += V_mean[i]*math.cos(2*math.pi*f0*Time[i]+math.pi)
             #LockinValue += V_mean[i]*math.cos(2*math.pi*f0*Time[i])
             LockinValue0 += V_mean[i]*math.cos(2*math.pi*ifreq*Time[i])
-            #LockinValue90 += V_mean[i]*math.cos(2*math.pi*f0*Time[i]+math.pi/2)
+            LockinValue90 += V_mean[i]*math.cos(2*math.pi*ifreq*Time[i]+math.pi/2)
         t1 = Time[i]
-        #LockinValue = math.sqrt(LockinValue0**2 + LockinValue90**2)
+        LockinValue = math.sqrt(LockinValue0**2 + LockinValue90**2)
         FreqList.append(ifreq)
-        #LockinList.append(LockinValue/(t1-t0))
-        LockinList.append(LockinValue0/(t1-t0))
+        LockinList.append(LockinValue/(t1-t0))
+        #LockinList.append(LockinValue0/(t1-t0))
 
     df = pd.DataFrame({"freq": FreqList, "Lockin": LockinList})
     df_s = df.sort_values(by = "Lockin", ascending=False)
@@ -72,18 +76,21 @@ def FindDeltaLockin(F0, dDelta, Naverage, Time, V_mean):
     FreqList = []
     DeltaList = []
     LockinList = []
-    
     deltaRange = np.linspace(0., 2*math.pi, dDelta)
     for idelta in deltaRange:
         LockinValue = 0
+        LockinValue0 = 0
+        LockinValue90 = 0
         for i in range(Naverage):
             t0 = Time[0]
-            LockinValue += V_mean[i]*math.cos(2*math.pi*F0*Time[i]+idelta)
-            #LockinValue += V_mean[i]*math.cos(2*math.pi*f0*Time[i])
+            LockinValue0 += V_mean[i]*math.cos(2*math.pi*F0*Time[i]+idelta)
+            LockinValue90 += V_mean[i]*math.cos(2*math.pi*F0*Time[i]+idelta+math.pi/2)
 
+        LockinValue = math.sqrt(LockinValue0**2 + LockinValue90**2)
         t1 = Time[i]
         DeltaList.append(idelta)
         LockinList.append(LockinValue/(t1-t0))
+        #LockinList.append(LockinValue0/(t1-t0))
                     
     df = pd.DataFrame({"Delta": DeltaList, "Lockin": LockinList})
     df_s = df.sort_values(by = "Lockin", ascending=False)
@@ -106,11 +113,11 @@ def FinalLockin(F0, Delta0, Nstart, Nend, Naverage, Time, V_mean):
             t1 = Time[(j+1)*Naverage-1]
             t_ave = (t0+t1)/2
             LockinValue0 += V_mean[i]*math.cos(2*math.pi*F0*Time[i]+Delta0)
-            #LockinValue90 += V_mean[i]*math.cos(2*math.pi*f0*Time[i]+Delta+math.pi/2)
-        #LockinValue = math.sqrt(LockinValue0**2 + LockinValue90**2)
+            LockinValue90 += V_mean[i]*math.cos(2*math.pi*F0*Time[i]+Delta0+math.pi/2)
+        LockinValue = math.sqrt(LockinValue0**2 + LockinValue90**2)
         aveTime.append(t_ave)
-        #LockinList.append(LockinValue/(t1-t0))
-        LockinList.append(LockinValue0/(t1-t0))
+        LockinList.append(LockinValue/(t1-t0))
+        #LockinList.append(LockinValue0/(t1-t0))
     #end_time = time.time()
     #execution_time = end_time - start_time
     #print("Execution time normal:", execution_time, "seconds")
@@ -181,17 +188,18 @@ def main():
     #c1 = ROOT.gROOT.FindObject("c1")
     c1.Draw()
     c1.Update()
-    c1.SaveAs(conf.DataPath + "LockinValue.pdf")
-    c1.SaveAs(conf.DataPath + "LockinValue.png")
+    c1.SaveAs(AnalyzeDir + "LockinValue_%i.pdf" %FreqDeltaNaverage)
+    c1.SaveAs(AnalyzeDir + "LockinValue_%i.png" %FreqDeltaNaverage)
 
     if argc == 2:
-        with open(conf.DataPath + argvs[1], "w") as f:
+        with open(AnalyzeDir + argvs[1], "a") as f:
             f.write("FreqDeltaNaverage = %i\n" %(FreqDeltaNaverage))
             f.write("FinalNaverage = %i\n" %(FinalNaverage))
             f.write("StartF = %i, EndF = %i, dFreq = %i\n" %(StartF, EndF, dFreq))
             f.write("dDelta = %i\n" %(dDelta))
             f.write("Nstart = %i, Nend = %i\n" %(Nstart, Nend))
             f.write("F0 = %f, Delta0 = %f\n" %(F0, Delta0))
+            f.write("----------------------------------------------------\n")
 
 
 if __name__ == "__main__":

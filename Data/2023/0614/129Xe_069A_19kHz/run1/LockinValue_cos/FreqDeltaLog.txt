@@ -1,0 +1,42 @@
+FreqDeltaNaverage = 1000
+FinalNaverage = 1000
+StartF = 18000, EndF = 20000, dFreq = 1
+dDelta = 1000
+Nstart = 0, Nend = 150000
+F0 = 18971.000000, Delta0 = 6.283185
+----------------------------------------------------
+FreqDeltaNaverage = 5000
+FinalNaverage = 1000
+StartF = 18000, EndF = 20000, dFreq = 1
+dDelta = 1000
+Nstart = 0, Nend = 150000
+F0 = 18969.000000, Delta0 = 0.018868
+----------------------------------------------------
+FreqDeltaNaverage = 10000
+FinalNaverage = 1000
+StartF = 18000, EndF = 20000, dFreq = 1
+dDelta = 1000
+Nstart = 0, Nend = 150000
+F0 = 18967.000000, Delta0 = 0.012579
+----------------------------------------------------
+FreqDeltaNaverage = 30000
+FinalNaverage = 1000
+StartF = 18000, EndF = 20000, dFreq = 1
+dDelta = 1000
+Nstart = 0, Nend = 150000
+F0 = 18961.000000, Delta0 = 0.050316
+----------------------------------------------------
+FreqDeltaNaverage = 20000
+FinalNaverage = 1000
+StartF = 18000, EndF = 20000, dFreq = 1
+dDelta = 1000
+Nstart = 0, Nend = 150000
+F0 = 18963.000000, Delta0 = 0.056605
+----------------------------------------------------
+FreqDeltaNaverage = 40000
+FinalNaverage = 1000
+StartF = 18000, EndF = 20000, dFreq = 1
+dDelta = 1000
+Nstart = 0, Nend = 150000
+F0 = 18959.000000, Delta0 = 0.094342
+----------------------------------------------------

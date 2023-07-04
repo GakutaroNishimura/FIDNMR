@@ -1,0 +1,21 @@
+FreqDeltaNaverage = 1000
+FinalNaverage = 1000
+StartF = 18000, EndF = 20000, dFreq = 1
+dDelta = 1000
+Nstart = 0, Nend = 150000
+F0 = 18920.000000, Delta0 = 5.842922
+----------------------------------------------------
+FreqDeltaNaverage = 5000
+FinalNaverage = 1000
+StartF = 18000, EndF = 20000, dFreq = 1
+dDelta = 1000
+Nstart = 0, Nend = 150000
+F0 = 18951.000000, Delta0 = 4.679369
+----------------------------------------------------
+FreqDeltaNaverage = 10000
+FinalNaverage = 1000
+StartF = 18000, EndF = 20000, dFreq = 1
+dDelta = 1000
+Nstart = 0, Nend = 150000
+F0 = 18948.000000, Delta0 = 1.540921
+----------------------------------------------------

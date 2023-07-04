@@ -1,0 +1,7 @@
+FreqDeltaNaverage = 1000
+FinalNaverage = 1000
+StartF = 18000, EndF = 20000, dFreq = 1
+dDelta = 1000
+Nstart = 0, Nend = 150000
+F0 = 18704.000000, Delta0 = 6.081922
+----------------------------------------------------
