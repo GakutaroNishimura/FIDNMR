@@ -26,7 +26,7 @@ if Save_or_View == "Save":
 
 #DataDirectryName = "/Data/2023/0608/131Xe_234A_19kHz/run1/"
 #DataDirectryName = "/Data/2023/0608/131Xe_100A_19kHz/run1/"
-DataDirectryName = "/Data/2023/0614/129Xe_069A_19kHz/run1/"
+DataDirectryName = "/Data/2023/0614/129Xe_069A_19kHz/run6/"
 #DataDirectryName = "/Data/2023/0614/129Xe_067A_18.3kHz/run1/"
 #DataDirectryName = "/Data/2023/0614/129Xe_010A_18.3kHz/run1/"
 #DataDirectryName = "/Data/2023/0614/129Xe_010A_19kHz/run5/"

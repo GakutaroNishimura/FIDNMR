@@ -13,15 +13,15 @@ import sys
 argvs = sys.argv  
 argc = len(argvs) 
 
-AnalyzeDir = conf.DataPath + "/LockinValue_cos_sin/"
-#AnalyzeDir = conf.DataPath + "/LockinValue_cos/"
+#AnalyzeDir = conf.DataPath + "/LockinValue_cos_sin/"
+AnalyzeDir = conf.DataPath + "/LockinValue_cos/"
 
 os.makedirs(AnalyzeDir, exist_ok=True)
 
 Bin_or_Float = conf.Bin_or_Float
 FreqDeltaNaverage = 1000
 FinalNaverage = 1000
-StartF, EndF, dFreq = 18000, 20000, 1
+StartF, EndF, dFreq = 18500, 19500, 0.01
 dDelta = 1000
 Nstart, Nend = 0, 150000
 
@@ -48,7 +48,8 @@ def FindFreqDeltaLockin(StartF, EndF, Naverage, Time, V_mean):
 def FindFreqLockin(StartF, EndF, dFreq, Naverage, Time, V_mean):
     FreqList = []
     LockinList = []
-    for ifreq in range(StartF, EndF, dFreq):
+    #for ifreq in range(StartF, EndF, dFreq):
+    for ifreq in np.arange(StartF, EndF, dFreq):
         LockinValue = 0
         LockinValue0 = 0
         LockinValue90 = 0
@@ -57,12 +58,12 @@ def FindFreqLockin(StartF, EndF, dFreq, Naverage, Time, V_mean):
             #LockinValue += V_mean[i]*math.cos(2*math.pi*f0*Time[i]+math.pi)
             #LockinValue += V_mean[i]*math.cos(2*math.pi*f0*Time[i])
             LockinValue0 += V_mean[i]*math.cos(2*math.pi*ifreq*Time[i])
-            LockinValue90 += V_mean[i]*math.cos(2*math.pi*ifreq*Time[i]+math.pi/2)
+            #LockinValue90 += V_mean[i]*math.cos(2*math.pi*ifreq*Time[i]+math.pi/2)
         t1 = Time[i]
-        LockinValue = math.sqrt(LockinValue0**2 + LockinValue90**2)
+        #LockinValue = math.sqrt(LockinValue0**2 + LockinValue90**2)
         FreqList.append(ifreq)
-        LockinList.append(LockinValue/(t1-t0))
-        #LockinList.append(LockinValue0/(t1-t0))
+        #LockinList.append(LockinValue/(t1-t0))
+        LockinList.append(LockinValue0/(t1-t0))
 
     df = pd.DataFrame({"freq": FreqList, "Lockin": LockinList})
     df_s = df.sort_values(by = "Lockin", ascending=False)
@@ -84,13 +85,13 @@ def FindDeltaLockin(F0, dDelta, Naverage, Time, V_mean):
         for i in range(Naverage):
             t0 = Time[0]
             LockinValue0 += V_mean[i]*math.cos(2*math.pi*F0*Time[i]+idelta)
-            LockinValue90 += V_mean[i]*math.cos(2*math.pi*F0*Time[i]+idelta+math.pi/2)
+            #LockinValue90 += V_mean[i]*math.cos(2*math.pi*F0*Time[i]+idelta+math.pi/2)
 
-        LockinValue = math.sqrt(LockinValue0**2 + LockinValue90**2)
+        #LockinValue = math.sqrt(LockinValue0**2 + LockinValue90**2)
         t1 = Time[i]
         DeltaList.append(idelta)
-        LockinList.append(LockinValue/(t1-t0))
-        #LockinList.append(LockinValue0/(t1-t0))
+        #LockinList.append(LockinValue/(t1-t0))
+        LockinList.append(LockinValue0/(t1-t0))
                     
     df = pd.DataFrame({"Delta": DeltaList, "Lockin": LockinList})
     df_s = df.sort_values(by = "Lockin", ascending=False)
@@ -113,11 +114,11 @@ def FinalLockin(F0, Delta0, Nstart, Nend, Naverage, Time, V_mean):
             t1 = Time[(j+1)*Naverage-1]
             t_ave = (t0+t1)/2
             LockinValue0 += V_mean[i]*math.cos(2*math.pi*F0*Time[i]+Delta0)
-            LockinValue90 += V_mean[i]*math.cos(2*math.pi*F0*Time[i]+Delta0+math.pi/2)
-        LockinValue = math.sqrt(LockinValue0**2 + LockinValue90**2)
+            #LockinValue90 += V_mean[i]*math.cos(2*math.pi*F0*Time[i]+Delta0+math.pi/2)
+        #LockinValue = math.sqrt(LockinValue0**2 + LockinValue90**2)
         aveTime.append(t_ave)
-        LockinList.append(LockinValue/(t1-t0))
-        #LockinList.append(LockinValue0/(t1-t0))
+        #LockinList.append(LockinValue/(t1-t0))
+        LockinList.append(LockinValue0/(t1-t0))
     #end_time = time.time()
     #execution_time = end_time - start_time
     #print("Execution time normal:", execution_time, "seconds")
