@@ -1,0 +1,14 @@
+FreqDeltaNaverage = 150000
+FinalNaverage = 1000
+StartF = 18500, EndF = 19500, dFreq = 0
+dDelta = 100
+Nstart = 0, Nend = 150000
+F0 = 18900.682556, Delta0 = 0.951998
+----------------------------------------------------
+FreqDeltaNaverage = 1000
+FinalNaverage = 1000
+StartF = 18500, EndF = 19500, dFreq = 0
+dDelta = 1000
+Nstart = 0, Nend = 150000
+F0 = 18900.682556, Delta0 = 1.069211
+----------------------------------------------------

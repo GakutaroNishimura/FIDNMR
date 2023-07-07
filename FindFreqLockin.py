@@ -14,7 +14,8 @@ argvs = sys.argv
 argc = len(argvs) 
 
 #AnalyzeDir = conf.DataPath + "/LockinValue_cos_sin/"
-AnalyzeDir = conf.DataPath + "/LockinValue_cos/"
+#AnalyzeDir = conf.DataPath + "/LockinValue_cos/"
+AnalyzeDir = conf.DataPath + "/LockinValue_cos_fitF0/"
 
 os.makedirs(AnalyzeDir, exist_ok=True)
 
@@ -24,6 +25,8 @@ FinalNaverage = 1000
 StartF, EndF, dFreq = 18500, 19500, 0.01
 dDelta = 1000
 Nstart, Nend = 0, 150000
+x_min = 0
+x_max = 150000
 
 def FindFreqDeltaLockin(StartF, EndF, Naverage, Time, V_mean):
     FreqList = []
@@ -160,37 +163,86 @@ def GetDataList(Bin_or_Float):
 
     return Time, V_mean
 
+"""
+def FitSignal(x_min, x_max, Time, V_mean):
+    #c1 = ROOT.TCanvas("c1", "c1", 600, 600)
+    #c1.Divide(1, 2)
+    #c1.cd(1)
+    #gr = ROOT.TGraph(len(df.time[x_min:x_max]), np.array(df.time[x_min:x_max]), np.array(df.PickUpsignal[x_min:x_max]))
+    gr = ROOT.TGraph(len(Time[x_min:x_max]), Time[x_min:x_max], V_mean[x_min:x_max])
+    gr_fit = ROOT.TF1("f", "[0]*expo(-[1]*x)*sin(2*pi*[2]*x+[3]) + [4]", Time[x_min], Time[x_max])
+    #gr_fit.SetParameters(-6.61436292e-03,  6.50124722e+01,  1.81216540e+04,  1.41380037e+00)
+    #gr_fit.SetParameters(0.01415861885725226, 13.324007257585418, 18117.27312027492, 0.) # "./data/scope_260.csv"
+    gr_fit.SetParameters(0.04341888572810267, 5.383077353509305, 18900.682613541823, -35.1607898488646, 0.0020867903362365692) # 129Xe_069A_19kHz/run6
+    gr_fit.SetNpx(10000)
+    gr.Fit(gr_fit, "QR")
+    par = [gr_fit.GetParameter(k) for k in range(gr_fit.GetNpar())]
+    print(par)
+    #gr.Draw("APL")
+    #gr.SetMarkerStyle(7)
+    #gr.SetMarkerSize(10)
+    #ROOT.gStyle.SetOptFit(1)
+    #c1 = ROOT.gROOT.FindObject("c1")
+    #c1.Draw("same")
+    #c1.Update()
+
+    return par[2]
+"""
+    
 
 def main():
     Time, V_mean = GetDataList(Bin_or_Float)
+    c1 = ROOT.TCanvas("c1", "c1", 600, 600)
+    #c1.Divide(1, 2)
+    #c1.cd(1)
+    #c1.cd(1)
+    grSignal = ROOT.TGraph(len(Time[x_min:x_max]), Time[x_min:x_max], V_mean[x_min:x_max])
+    gr_fit = ROOT.TF1("f", "[0]*expo(-[1]*x)*sin(2*pi*[2]*x+[3]) + [4]", Time[x_min], Time[x_max])
+    gr_fit.SetParameters(0.04341888572810267, 5.383077353509305, 18900.682613541823, -35.1607898488646, 0.0020867903362365692) # 129Xe_069A_19kHz/run6
+    gr_fit.SetNpx(10000)
+    grSignal.Fit(gr_fit, "QR")
+    par = [gr_fit.GetParameter(k) for k in range(gr_fit.GetNpar())]
+    grSignal.Draw("APL")
+    grSignal.SetMarkerStyle(7)
+    grSignal.SetMarkerSize(10)
+    ROOT.gStyle.SetOptFit(1)
+    c1.Draw()
+    #c1.Update()
 
-    F0, FreqList, FreqLockinList = FindFreqLockin(StartF, EndF, dFreq, FreqDeltaNaverage, Time, V_mean)
+    F0 = par[2]
+    #F0 = FitSignal(x_min, x_max, Time, V_mean)
+    #F0, FreqList, FreqLockinList = FindFreqLockin(StartF, EndF, dFreq, FreqDeltaNaverage, Time, V_mean)
     Delta0, DeltaList, DeltaLockinList = FindDeltaLockin(F0, dDelta, FreqDeltaNaverage, Time, V_mean)
     aveTime, LockinList = FinalLockin(F0, Delta0, Nstart, Nend, FinalNaverage, Time, V_mean)
 
-    c1 = ROOT.TCanvas("c1", "c1", 600, 600)
+    c2 = ROOT.TCanvas("c2", "c2", 600, 600)
+    #c1.cd(2)
+    #c2.cd()
     #c1.SetLeftMargin(0.15)
     #c1.SetRightMargin(0.05)
     #ROOT.gStyle.SetTitleOffset(2.0, "Y")
-    gr = ROOT.TGraph(len(aveTime), np.array(aveTime), np.array(LockinList))
+    grLockin = ROOT.TGraph(len(aveTime), np.array(aveTime), np.array(LockinList))
     #gr_fit = ROOT.TF1("f", "[0]*expo(-[1]*x)", aveTime[0], aveTime[10])
     #gr_fit.SetParameters(60000., 25.)
     #gr.Fit(gr_fit, "QR")
     #par = [gr_fit.GetParameter(k) for k in range(gr_fit.GetNpar())]
-    gr.Draw("APL")
-    gr.SetMarkerStyle(7)
-    gr.SetMarkerSize(10)
+    grLockin.Draw("APL")
+    grLockin.SetMarkerStyle(7)
+    grLockin.SetMarkerSize(10)
     #gr.SetTitle("average = %d"%FinalNaverage)
-    gr.SetTitle("average = %d"%FreqDeltaNaverage)
-    gr.GetXaxis().SetTitle("time [s]")
-    gr.GetYaxis().SetTitle("LockinValue [V/s]")
-    gr.GetYaxis().SetMaxDigits(4)
+    grLockin.SetTitle("average = %d"%FreqDeltaNaverage)
+    grLockin.GetXaxis().SetTitle("time [s]")
+    grLockin.GetYaxis().SetTitle("LockinValue [V/s]")
+    grLockin.GetYaxis().SetMaxDigits(4)
     #gr_fit.Draw("same")
     #c1 = ROOT.gROOT.FindObject("c1")
-    c1.Draw()
-    c1.Update()
-    c1.SaveAs(AnalyzeDir + "LockinValue_%i.pdf" %FreqDeltaNaverage)
-    c1.SaveAs(AnalyzeDir + "LockinValue_%i.png" %FreqDeltaNaverage)
+    #c1.Draw("same")
+    #c1.Update()
+    c2.Draw()
+    #c2.Update()
+    #time.sleep(1000)
+    c2.SaveAs(AnalyzeDir + "LockinValue_%i.pdf" %FreqDeltaNaverage)
+    c2.SaveAs(AnalyzeDir + "LockinValue_%i.png" %FreqDeltaNaverage)
 
     if argc == 2:
         with open(AnalyzeDir + argvs[1], "a") as f:
