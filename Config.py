@@ -24,9 +24,9 @@ if Save_or_View == "Save":
     DataPath         = "./" + DirectryNameDate + DataDirectryName
 
 
-DataDirectryName = "/Data/2023/0616/131Xe_234A_19kHz/run2/"
+#DataDirectryName = "/Data/2023/0616/131Xe_234A_19kHz/run2/"
 #DataDirectryName = "/Data/2023/0608/131Xe_100A_19kHz/run1/"
-#DataDirectryName = "/Data/2023/0614/129Xe_069A_19kHz/run11/"
+DataDirectryName = "/Data/2023/0614/129Xe_069A_19kHz/run3/"
 #DataDirectryName = "/Data/2023/0614/129Xe_067A_18.3kHz/run1/"
 #DataDirectryName = "/Data/2023/0614/129Xe_010A_18.3kHz/run1/"
 #DataDirectryName = "/Data/2023/0614/129Xe_010A_19kHz/run5/"

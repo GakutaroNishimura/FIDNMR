@@ -1,5 +1,6 @@
 import ROOT
 import numpy as np
+import time
 
 # データ生成
 np.random.seed(0)
@@ -26,3 +27,5 @@ canvas1.Draw()
 canvas2 = ROOT.TCanvas("canvas2", "Graph 2", 800, 600)
 graph2.Draw("AL")  # "AL"は線を描画する指定
 canvas2.Draw()
+
+time.sleep(1000)
