@@ -20,13 +20,14 @@ AnalyzeDir = conf.DataPath + "/LockinValue_cos_fitF0/"
 os.makedirs(AnalyzeDir, exist_ok=True)
 
 Bin_or_Float = conf.Bin_or_Float
-FreqDeltaNaverage = 1000
+FreqDeltaNaverage = 8192
 FinalNaverage = 1000
-StartF, EndF, dFreq = 18500, 19500, 0.01
+StartF, EndF, dFreq = 18300, 19000, 0.1
 dDelta = 1000
-Nstart, Nend = 0, 150000
+#Nstart, Nend = 0, 150000
+Nstart, Nend = 0, 8192
 x_min = 0
-x_max = 150000
+x_max = 8000
 
 def FindFreqDeltaLockin(StartF, EndF, Naverage, Time, V_mean):
     FreqList = []
@@ -68,7 +69,7 @@ def FindFreqLockin(StartF, EndF, dFreq, Naverage, Time, V_mean):
         #LockinList.append(LockinValue/(t1-t0))
         LockinList.append(LockinValue0/(t1-t0))
 
-    df = pd.DataFrame({"freq": FreqList, "Lockin": LockinList})
+    df = pd.DataFrame({"freq": FreqList, "Lockin": np.abs(LockinList)})
     df_s = df.sort_values(by = "Lockin", ascending=False)
     df_r = df_s.reset_index(drop=True)
     F0 = df_r.freq[0]
@@ -96,7 +97,7 @@ def FindDeltaLockin(F0, dDelta, Naverage, Time, V_mean):
         #LockinList.append(LockinValue/(t1-t0))
         LockinList.append(LockinValue0/(t1-t0))
                     
-    df = pd.DataFrame({"Delta": DeltaList, "Lockin": LockinList})
+    df = pd.DataFrame({"Delta": DeltaList, "Lockin": np.abs(LockinList)})
     df_s = df.sort_values(by = "Lockin", ascending=False)
     df_r = df_s.reset_index(drop=True)
     Delta0 = df_r.Delta[0]
@@ -191,7 +192,12 @@ def FitSignal(x_min, x_max, Time, V_mean):
     
 
 def main():
-    Time, V_mean = GetDataList(Bin_or_Float)
+    #Time, V_mean = GetDataList(Bin_or_Float)
+    df = pd.read_csv(conf.DataName, sep=",", names = ["time", "signal"])
+    Time = np.array(df.time, dtype="d")
+    V_mean = np.array(df.signal, dtype="d")
+    
+    """
     c1 = ROOT.TCanvas("c1", "c1", 600, 600)
     #c1.Divide(1, 2)
     #c1.cd(1)
@@ -211,7 +217,9 @@ def main():
 
     F0 = par[2]
     #F0 = FitSignal(x_min, x_max, Time, V_mean)
-    #F0, FreqList, FreqLockinList = FindFreqLockin(StartF, EndF, dFreq, FreqDeltaNaverage, Time, V_mean)
+    """
+    
+    F0, FreqList, FreqLockinList = FindFreqLockin(StartF, EndF, dFreq, FreqDeltaNaverage, Time, V_mean)
     Delta0, DeltaList, DeltaLockinList = FindDeltaLockin(F0, dDelta, FreqDeltaNaverage, Time, V_mean)
     aveTime, LockinList = FinalLockin(F0, Delta0, Nstart, Nend, FinalNaverage, Time, V_mean)
 
@@ -222,10 +230,11 @@ def main():
     #c1.SetRightMargin(0.05)
     #ROOT.gStyle.SetTitleOffset(2.0, "Y")
     grLockin = ROOT.TGraph(len(aveTime), np.array(aveTime), np.array(LockinList))
-    #gr_fit = ROOT.TF1("f", "[0]*expo(-[1]*x)", aveTime[0], aveTime[10])
-    #gr_fit.SetParameters(60000., 25.)
-    #gr.Fit(gr_fit, "QR")
-    #par = [gr_fit.GetParameter(k) for k in range(gr_fit.GetNpar())]
+    gr_fit = ROOT.TF1("f", "[0]*expo(-[1]*x)", aveTime[0], aveTime[-1])
+    gr_fit.SetParameters(40000., 12.5)
+    grLockin.Fit(gr_fit, "QR")
+    par = [gr_fit.GetParameter(k) for k in range(gr_fit.GetNpar())]
+    print(par)
     grLockin.Draw("APL")
     grLockin.SetMarkerStyle(7)
     grLockin.SetMarkerSize(10)
@@ -234,18 +243,17 @@ def main():
     grLockin.GetXaxis().SetTitle("time [s]")
     grLockin.GetYaxis().SetTitle("LockinValue [V/s]")
     grLockin.GetYaxis().SetMaxDigits(4)
-    #gr_fit.Draw("same")
     #c1 = ROOT.gROOT.FindObject("c1")
     #c1.Draw("same")
     #c1.Update()
     c2.Draw()
-    #c2.Update()
+    c2.Update()
     #time.sleep(1000)
     c2.SaveAs(AnalyzeDir + "LockinValue_%i.pdf" %FreqDeltaNaverage)
     c2.SaveAs(AnalyzeDir + "LockinValue_%i.png" %FreqDeltaNaverage)
 
     if argc == 2:
-        with open(AnalyzeDir + argvs[1], "a") as f:
+        with open(AnalyzeDir + argvs[1], "w") as f:
             f.write("FreqDeltaNaverage = %i\n" %(FreqDeltaNaverage))
             f.write("FinalNaverage = %i\n" %(FinalNaverage))
             f.write("StartF = %i, EndF = %i, dFreq = %i\n" %(StartF, EndF, dFreq))

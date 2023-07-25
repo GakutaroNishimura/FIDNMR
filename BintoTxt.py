@@ -14,7 +14,8 @@ for j in range(1, 12):
     print(conf.DataPath)
 
     for i in range(len(file_list)):
-        if ".bin" == os.path.splitext(file_list[i])[1]:
+        #if ".bin" == os.path.splitext(file_list[i])[1]:
+        if ".1d" == os.path.splitext(file_list[i])[1]:
             data_list.append(os.path.join(conf.DataPath + "%i/" %j, file_list[i]))
 
     print(len(data_list))
