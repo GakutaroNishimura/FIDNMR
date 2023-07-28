@@ -22,12 +22,13 @@ os.makedirs(AnalyzeDir, exist_ok=True)
 Bin_or_Float = conf.Bin_or_Float
 FreqDeltaNaverage = 8192
 FinalNaverage = 1000
-StartF, EndF, dFreq = 18300, 19000, 0.1
+StartF, EndF, dFreq = 18300, 18500, 0.1
 dDelta = 1000
 #Nstart, Nend = 0, 150000
 Nstart, Nend = 0, 8192
 x_min = 0
-x_max = 8000
+x_max = 8191
+FitFID_or_Lockin = "Lockin"
 
 def FindFreqDeltaLockin(StartF, EndF, Naverage, Time, V_mean):
     FreqList = []
@@ -97,7 +98,7 @@ def FindDeltaLockin(F0, dDelta, Naverage, Time, V_mean):
         #LockinList.append(LockinValue/(t1-t0))
         LockinList.append(LockinValue0/(t1-t0))
                     
-    df = pd.DataFrame({"Delta": DeltaList, "Lockin": np.abs(LockinList)})
+    df = pd.DataFrame({"Delta": DeltaList, "Lockin": LockinList})
     df_s = df.sort_values(by = "Lockin", ascending=False)
     df_r = df_s.reset_index(drop=True)
     Delta0 = df_r.Delta[0]
@@ -137,7 +138,7 @@ def GetDataList(Bin_or_Float):
         V_mean = np.array(df.signal, dtype="d")
 
     else:
-        #StartNo = FileInfo.GetMaxFileNumber() + 1
+        #StartNo = FileInfo.GetMaxFileNumber() + 1s
         #StopNo  = conf.NumOfDataAcquisition
         file_list = os.listdir(conf.DataPath)
         data_list = []
@@ -164,8 +165,8 @@ def GetDataList(Bin_or_Float):
 
     return Time, V_mean
 
-"""
-def FitSignal(x_min, x_max, Time, V_mean):
+
+def FitFID(x_min, x_max, Time, V_mean):
     #c1 = ROOT.TCanvas("c1", "c1", 600, 600)
     #c1.Divide(1, 2)
     #c1.cd(1)
@@ -188,8 +189,8 @@ def FitSignal(x_min, x_max, Time, V_mean):
     #c1.Update()
 
     return par[2]
-"""
-    
+
+
 
 def main():
     #Time, V_mean = GetDataList(Bin_or_Float)
@@ -230,22 +231,23 @@ def main():
     #c1.SetRightMargin(0.05)
     #ROOT.gStyle.SetTitleOffset(2.0, "Y")
     grLockin = ROOT.TGraph(len(aveTime), np.array(aveTime), np.array(LockinList))
-    gr_fit = ROOT.TF1("f", "[0]*expo(-[1]*x)", aveTime[0], aveTime[-1])
+    gr_fit = ROOT.TF1("f", "[0]*exp(-[1]*x)", aveTime[0], aveTime[-1])
     gr_fit.SetParameters(40000., 12.5)
     grLockin.Fit(gr_fit, "QR")
     par = [gr_fit.GetParameter(k) for k in range(gr_fit.GetNpar())]
     print(par)
-    grLockin.Draw("APL")
+    grLockin.Draw("AP")
     grLockin.SetMarkerStyle(7)
     grLockin.SetMarkerSize(10)
     #gr.SetTitle("average = %d"%FinalNaverage)
-    grLockin.SetTitle("average = %d"%FreqDeltaNaverage)
+    grLockin.SetTitle("average = %d"%FinalNaverage)
     grLockin.GetXaxis().SetTitle("time [s]")
     grLockin.GetYaxis().SetTitle("LockinValue [V/s]")
     grLockin.GetYaxis().SetMaxDigits(4)
     #c1 = ROOT.gROOT.FindObject("c1")
     #c1.Draw("same")
     #c1.Update()
+    ROOT.gStyle.SetOptFit(1)
     c2.Draw()
     c2.Update()
     #time.sleep(1000)
