@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import ROOT
 
-DirPath = "./Data/2023/0728/test01/"
+DirPath = "./Data/2023/1102/test01/"
 DataPath = DirPath + "10/ftdata2.csv"
 
 df = pd.read_csv(DataPath, names=["freq", "amplitude"])
