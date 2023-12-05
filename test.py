@@ -1,31 +1,14 @@
-import ROOT
+import matplotlib.pyplot as plt
 import numpy as np
-import time
 
-# データ生成
-np.random.seed(0)
-x = np.linspace(0, 10, 100)
-y1 = np.sin(x)
-y2 = np.cos(x) + np.random.normal(0, 0.2, 100)
+#x = [65.3, 75.1, 84.9, 94.8, 105.9, 120.1, 130.2, 140.0]
+#y = [0.959191, 0.787868, 0.601351, 0.651504, 1.08668, 0.673093, 0.512618, 1.36942]
 
-# ROOTのグラフ描画用のデータ形式に変換
-graph1 = ROOT.TGraph(len(x), x, y1)
-graph2 = ROOT.TGraph(len(x), x, y2)
+x = [50.1, 59.8, 70.0, 79.8, 89.8, 100.1, 103.2, 110.0, 119.8, 129.9]
+y = [1.13869, 0.663615, 1.39943, 1.23727, 1.40147, 0.691492, 1.08632, 1.35493, 1.17103, 1.64879]
 
-# グラフスタイルの設定
-graph1.SetLineColor(ROOT.kBlue)
-graph1.SetLineWidth(2)
-graph2.SetLineColor(ROOT.kRed)
-graph2.SetLineWidth(2)
-
-# グラフ1の描画用キャンバス作成
-canvas1 = ROOT.TCanvas("canvas1", "Graph 1", 800, 600)
-graph1.Draw("AL")  # "AL"は線を描画する指定
-canvas1.Draw()
-
-# グラフ2の描画用キャンバス作成
-canvas2 = ROOT.TCanvas("canvas2", "Graph 2", 800, 600)
-graph2.Draw("AL")  # "AL"は線を描画する指定
-canvas2.Draw()
-
-time.sleep(1000)
+plt.plot(x, y, ".")
+plt.xlabel("temp")
+plt.ylim(0.0, 1.7)
+plt.ylabel("F.T. amp")
+plt.show()

@@ -35,7 +35,7 @@ print("T2 is %f" %T2)
 
 gr.Draw("APL")
 gr.GetXaxis().SetRangeUser(f_min, f_max)
-gr.GetYaxis().SetRangeUser(0.0, 3.5)
+#gr.GetYaxis().SetRangeUser(0.0, 3.5)
 ROOT.gStyle.SetOptFit(1)
 gr.SetMarkerStyle(7)
 gr.SetMarkerSize(10)
