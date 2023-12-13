@@ -9,15 +9,17 @@ import time
 
 argvs = sys.argv
 
-StartNum = 2
-EndNum = 9
+StartNum = 0
+EndNum = 0
 
 for i in range(StartNum, EndNum + 1):
     # DirPath = "./Data/2023/0726/test%d/" %i
     #DirPath = "./Data/2023/0727/test0%d/" %i
     # DirPath = "./Data/2023/0727/test%d/" %i
-    DirPath = "./Data/2023/0728/test0%d/" %i
-    DataPath = DirPath + "/10/ftdata2.csv" 
+    #DirPath = "./Data/2023/0728/test0%d/" %i
+    DirPath = "."
+    # DataPath = DirPath + "/10/ftdata2.csv" 
+    DataPath = conf.DataPath + "/ftdata2.csv"
     df = pd.read_csv(DataPath, names=["freq", "amplitude"])
 
     func.FitFunc(DirPath, df)

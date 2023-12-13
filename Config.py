@@ -30,7 +30,7 @@ if Save_or_View == "Save":
 #DataDirectryName = "/Data/2023/0614/129Xe_067A_18.3kHz/run1/"
 #DataDirectryName = "/Data/2023/0614/129Xe_010A_18.3kHz/run1/"
 #DataDirectryName = "/Data/2023/0614/129Xe_010A_19kHz/run5/"
-DataDirectryName = "/Data/2023/0726/test43/10/"
+DataDirectryName = "/Data/2023/0721/test07/1/"
 
 HomePath         = os.path.expanduser("~")
 #DataPath         = HomePath + "/NMRProgram/AFPNMR_FS/" + DataDirectryName

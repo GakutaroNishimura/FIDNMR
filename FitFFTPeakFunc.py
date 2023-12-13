@@ -16,15 +16,19 @@ voltage = 1.0
 
 df = pd.read_csv(DataPath, names=["freq", "amplitude"])
 
-f_0 = 18390.0
+# f_0 = 18390.0
+# f_dev = 50
+# f_min = f_0-f_dev
+# f_max = f_0+f_dev
+
+f_0 = 18935.0 #129Xe 0721/test07
 f_dev = 50
 f_min = f_0-f_dev
 f_max = f_0+f_dev
 
-f_0BG = 18400.0
 f_devBG = 400.0
-f_minBG = f_0BG-f_devBG
-f_maxBG = f_0BG+f_devBG
+f_minBG = f_0-f_devBG
+f_maxBG = f_0+f_devBG
 
 # f_0 = 18920.0
 # f_min = f_0-150.0
@@ -125,12 +129,12 @@ def FitFunc(DirPath, df):
     gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-[2]), 2) + [0]*[0])", f_min, f_max)
 
 
-    gr_fit.SetParameters(4.0, 12.8, 18391.)
+    # gr_fit.SetParameters(4.0, 12.8, 18391.)
     # gr_fit.SetParameters(4.0, 12.8)
     # gr_fit.SetParameters(0.7426, 2.195)
     #gr_fit.SetParameters(4.0, 18404., 12.8, 0.14)
     #gr_fit.SetParameters(13.13, 18920., 500.0, 1.5)
-    # gr_fit.SetParameters(15.0, 18920., 500.0)
+    gr_fit.SetParameters(15.0, 18920., 500.0)
 
     # gr_BGfit.SetParameters(-160.0, 0.015, -4.5)
 
