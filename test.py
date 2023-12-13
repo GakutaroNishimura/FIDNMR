@@ -1,14 +1,51 @@
-import matplotlib.pyplot as plt
-import numpy as np
+import ROOT
 
-#x = [65.3, 75.1, 84.9, 94.8, 105.9, 120.1, 130.2, 140.0]
-#y = [0.959191, 0.787868, 0.601351, 0.651504, 1.08668, 0.673093, 0.512618, 1.36942]
+# データの作成
+# ここでは単純な例として、ランダムなデータを生成しています。
+# 実際のデータに合わせて、適切なデータを読み込んでください。
+data = [1.5, 1.6, 1.7, 1.8, 1.9, 5.2, 5.5, 6.0, 6.5, 6.8]
 
-x = [50.1, 59.8, 70.0, 79.8, 89.8, 100.1, 103.2, 110.0, 119.8, 129.9]
-y = [1.13869, 0.663615, 1.39943, 1.23727, 1.40147, 0.691492, 1.08632, 1.35493, 1.17103, 1.64879]
+# ヒストグラムの作成
+hist = ROOT.TH1F("hist", "Data Histogram", 10, 0, 10)
 
-plt.plot(x, y, ".")
-plt.xlabel("temp")
-plt.ylim(0.0, 1.7)
-plt.ylabel("F.T. amp")
-plt.show()
+for value in data:
+    hist.Fill(value)
+
+# 各範囲に対してフィッティングを行う
+fit_range_1 = (1, 2)
+fit_range_2 = (5, 7)
+
+# フィッティング関数の定義
+# ここでは単純な例として、ガウス関数を使用しています。
+# 実際のデータに合わせて適切な関数を選択してください。
+fit_func = ROOT.TF1("fit_func", "gaus", 0, 10)
+
+# 範囲1のフィッティング
+hist.Fit("fit_func", "R", "", fit_range_1[0], fit_range_1[1])
+
+# フィッティング結果の取得
+fit_result_1 = hist.GetFunction("fit_func").Clone("fit_result_1")
+
+# 範囲2のフィッティング
+hist.Fit("fit_func", "R", "", fit_range_2[0], fit_range_2[1])
+
+# フィッティング結果の取得
+fit_result_2 = hist.GetFunction("fit_func").Clone("fit_result_2")
+
+# フィッティング結果の組み合わせ
+# ここでは、各範囲のフィッティング結果を足し合わせています。
+# 適切な組み合わせ方法は、実際のデータや目的によります。
+final_fit_result = fit_result_1 + fit_result_2
+
+# キャンバスの作成と表示
+canvas = ROOT.TCanvas("canvas", "Fit Result", 800, 600)
+hist.Draw()
+final_fit_result.Draw("same")
+canvas.Update()
+canvas.Draw()
+
+# 結果を保存する場合
+canvas.SaveAs("fit_result.png")
+
+# プログラムの実行を続ける
+ROOT.gApplication.Run()
