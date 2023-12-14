@@ -126,7 +126,8 @@ def FitFunc(DirPath, df):
     # gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18397.0), 2) + [0]*[0])", f_min, f_max)
     # gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18391.0), 2) + [0]*[0])", f_min, f_max)
     # gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18383.0), 2) + [0]*[0])", f_min, f_max)
-    gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-[2]), 2) + [0]*[0])", f_min, f_max)
+    gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18935.0), 2) + [0]*[0])", f_min, f_max)
+    #gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-[2]), 2) + [0]*[0])", f_min, f_max)
 
 
     # gr_fit.SetParameters(4.0, 12.8, 18391.)
@@ -134,7 +135,8 @@ def FitFunc(DirPath, df):
     # gr_fit.SetParameters(0.7426, 2.195)
     #gr_fit.SetParameters(4.0, 18404., 12.8, 0.14)
     #gr_fit.SetParameters(13.13, 18920., 500.0, 1.5)
-    gr_fit.SetParameters(15.0, 18920., 500.0)
+    # gr_fit.SetParameters(15.0, 18920., 500.0)
+    gr_fit.SetParameters(15.0, 500.0)
 
     # gr_BGfit.SetParameters(-160.0, 0.015, -4.5)
 
