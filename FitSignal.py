@@ -20,7 +20,7 @@ x_max = len(Time)-1
 
 #gr = ROOT.TGraph(len(df.time[x_min:x_max]), np.array(df.time[x_min:x_max]), np.array(df.PickUpsignal[x_min:x_max]))
 gr = ROOT.TGraph(len(df.time[x_min:x_max]), np.array(df.time[x_min:x_max]), np.array(df.signal[x_min:x_max]))
-gr_fit = ROOT.TF1("f", "[0]*expo(-[1]*x)*sin(2*pi*[2]*x+[3]) + [4]", df.time[x_min], df.time[x_max])
+gr_fit = ROOT.TF1("f", "[0]*exp(-[1]*x)*sin(2*pi*[2]*x+[3]) + [4]", df.time[x_min], df.time[x_max])
 #gr_fit.SetParameters(-6.61436292e-03,  6.50124722e+01,  1.81216540e+04,  1.41380037e+00)
 #gr_fit.SetParameters(0.01415861885725226, 13.324007257585418, 18117.27312027492, 0.) # "./data/scope_260.csv"
 #gr_fit.SetParameters(0.04341888572810267, 5.383077353509305, 18900.682613541823, -35.1607898488646, 0.0020867903362365692) # 129Xe_069A_19kHz/run6

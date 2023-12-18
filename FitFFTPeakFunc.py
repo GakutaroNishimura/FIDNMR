@@ -10,33 +10,37 @@ argvs = sys.argv
 DataPath = conf.DataPath + "ftdata2.csv"
 
 voltage = 1.0
+temp = 120
 
 # DirPath = "./Data/2023/0728/test01/"
 # DataPath = DirPath + "10/ftdata2.csv"
 
 df = pd.read_csv(DataPath, names=["freq", "amplitude"])
 
+#131Xe 100℃から150℃.
 # f_0 = 18390.0
 # f_dev = 50
 # f_min = f_0-f_dev
 # f_max = f_0+f_dev
+# f_minBG = 18100.0
+# f_maxBG = 19100.0
 
-f_0 = 18935.0 #129Xe 0721/test07
-f_dev = 50
+#131Xe 155℃のやつ.0728.
+f_0 = 18400.0
+f_dev = 70
 f_min = f_0-f_dev
 f_max = f_0+f_dev
+f_minBG = 18100.0
+f_maxBG = 19100.0
 
-f_devBG = 400.0
-f_minBG = f_0-f_devBG
-f_maxBG = f_0+f_devBG
+#129Xe 0721/test07
+# f_0 = 18935.0 
+# f_dev = 50
+# f_min = f_0-f_dev
+# f_max = f_0+f_dev
+# f_minBG = f_0-400.0
+# f_maxBG = f_0+400.0
 
-# f_0 = 18920.0
-# f_min = f_0-150.0
-# f_max = f_0+150.0
-
-# f_0 = 18920.0
-# f_min = f_0-400.0
-# f_max = f_0+400.0
 
 def FitFunc(DirPath, df):
     c = ROOT.TCanvas("c", "title", 900, 600)
@@ -121,22 +125,27 @@ def FitFunc(DirPath, df):
 
     #gr = ROOT.TGraph(len(df.freq), np.array(df.freq), np.array(df.amplitude))
     gr = ROOT.TGraph(len(freq), np.array(freq), np.array(amp))
-    #gr_fit = ROOT.TF1("f", "[2]*[0]/(pow((x-[1]), 2) + [0]*[0]) + [3]", f_min, f_max)
+    # gr_fit = ROOT.TF1("f", "[2]*[0]/(pow((x-[1]), 2) + [0]*[0]) + [3]", f_min, f_max)
     #gr_BGfit = ROOT.TF1("f", "pol2", f_min, f_max)
     # gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18397.0), 2) + [0]*[0])", f_min, f_max)
     # gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18391.0), 2) + [0]*[0])", f_min, f_max)
     # gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18383.0), 2) + [0]*[0])", f_min, f_max)
-    gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18935.0), 2) + [0]*[0])", f_min, f_max)
-    #gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-[2]), 2) + [0]*[0])", f_min, f_max)
+    # gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18384.0), 2) + [0]*[0])", f_min, f_max) #0727/test32-38
+    # gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18385.0), 2) + [0]*[0])", f_min, f_max) #0727/test11-18
+    # gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18388.0), 2) + [0]*[0])", f_min, f_max) #0727/test25-31
+    # gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18390.0), 2) + [0]*[0])", f_min, f_max) #0727/test19-24
+    # gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18404.0), 2) + [0]*[0])", f_min, f_max)
+    # gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-18935.0), 2) + [0]*[0])", f_min, f_max) #129Xe
+    gr_fit = ROOT.TF1("f", "[1]*[0]/(pow((x-[2]), 2) + [0]*[0])", f_min, f_max)
 
 
-    # gr_fit.SetParameters(4.0, 12.8, 18391.)
-    # gr_fit.SetParameters(4.0, 12.8)
+    gr_fit.SetParameters(4.0, 12.8, 18391.)
+    # gr_fit.SetParameters(4.0, 12.8) #131Xe
     # gr_fit.SetParameters(0.7426, 2.195)
     #gr_fit.SetParameters(4.0, 18404., 12.8, 0.14)
     #gr_fit.SetParameters(13.13, 18920., 500.0, 1.5)
     # gr_fit.SetParameters(15.0, 18920., 500.0)
-    gr_fit.SetParameters(15.0, 500.0)
+    # gr_fit.SetParameters(15.0, 500.0) #129Xe
 
     # gr_BGfit.SetParameters(-160.0, 0.015, -4.5)
 
@@ -147,7 +156,7 @@ def FitFunc(DirPath, df):
 
     integral = gr_fit.Integral(f_min, f_max)
     fwhm = 2*par[0]
-    T2 = 1/(np.pi*fwhm)
+    T2 = 1/fwhm
     print("FWHM is %f" %fwhm)
     print("T2 is %f" %T2)
     print("function integral is %f" %integral)
@@ -187,3 +196,8 @@ def FitFunc(DirPath, df):
     # f.write("%f %f %f %f %f\n" %(voltage, integral, par[0], par[1], par[2]))
     f.write("%f %f\n" %(integral, T2))
     f.close()
+
+
+if __name__ == "__main__":
+    DirPath = "./" + conf.DataDirectryName
+    FitFunc(DirPath, df)
