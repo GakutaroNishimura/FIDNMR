@@ -4,8 +4,8 @@ import ROOT
 
 #df = pd.read_table("./PeakRFVoltage.txt", names=["voltage", "integral", "par0", "par1", "par2"], sep=" ")
 
-voltage = [1.0, 3.0, 2.0, 0.8, 0.5, 1.2]
-peak = [41.2412, 14.0849, 11.3675, 40.4567, 11.6887, 40.4863]
+voltage = [1.0, 2.0, 0.8, 0.5, 1.2]
+peak = [41.2412, 11.3675, 40.4567, 11.6887, 40.4863]
 
 #gr = ROOT.TGraph(len(df.voltage), np.array(df.voltage), np.array(df.integral))
 gr = ROOT.TGraph(len(voltage), np.array(voltage), np.array(peak))
@@ -26,8 +26,8 @@ gr.GetYaxis().SetTitleOffset(0.7)
 gr.Draw("AP")
 #gr.GetYaxis().SetRangeUser(-100.0, 2000.0)
 gr.GetYaxis().SetRangeUser(-2.0, 50.0)
-gr.SetMarkerStyle(7)
-gr.SetMarkerSize(10)
+gr.SetMarkerStyle(3)
+gr.SetMarkerSize(1.5)
 ROOT.gStyle.SetOptFit(1)
 ROOT.gPad.SetTopMargin(0.1)
 ROOT.gPad.SetBottomMargin(0.15)
