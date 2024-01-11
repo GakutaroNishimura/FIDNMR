@@ -30,7 +30,7 @@ if Save_or_View == "Save":
 #DataDirectryName = "/Data/2023/0614/129Xe_067A_18.3kHz/run1/"
 #DataDirectryName = "/Data/2023/0614/129Xe_010A_18.3kHz/run1/"
 #DataDirectryName = "/Data/2023/0614/129Xe_010A_19kHz/run5/"
-DataDirectryName = "/Data/2023/0728/test02/"
+DataDirectryName = "/Data/2023/0727/test38/"
 # DataDirectryName = "/Data/2023/0721/test07/" #129Xe FID. EPRと一緒にとったやつ.
 
 HomePath         = os.path.expanduser("~")

@@ -99,6 +99,7 @@ def FitFunc(DirPath, df):
 
     grBG.Draw("AP")
     grBGplot.Draw("PL")
+    grBG.GetXaxis().SetRangeUser(f_minBG, f_maxBG)
     grBG.GetYaxis().SetRangeUser(0.0, amp_max*1.5)
     ROOT.gPad.SetTopMargin(0.1)
     ROOT.gPad.SetBottomMargin(0.15)
@@ -198,6 +199,128 @@ def FitFunc(DirPath, df):
     f.close()
 
 
+def FitPeak(DirPath, df):
+    freqBG = []
+    ampBG = []
+    j = 0
+    for i in df.freq:
+        if i > f_minBG and i < f_min:
+            freqBG.append(i)
+            iamp = df.amplitude[j]
+            ampBG.append(iamp)
+        if i > f_max and i < f_maxBG:
+            freqBG.append(i)
+            iamp = df.amplitude[j]
+            ampBG.append(iamp)
+        j += 1
+
+    amp = []
+    j = 0
+    for i in df.freq:
+        if i > f_minBG and i < f_maxBG:
+            iamp = df.amplitude[j]
+            amp.append(iamp)
+        j += 1
+    amp_max = max(amp)
+
+    c = ROOT.TCanvas("c", "title", 900, 600)
+    #c2 = ROOT.TCanvas("c", "title", 900, 600)
+    c.Divide(1,2)
+    c.cd(1)
+    
+    grBG = ROOT.TGraph(len(freqBG), np.array(freqBG), np.array(ampBG))
+    grBGplot = ROOT.TGraph(len(df.freq), np.array(df.freq), np.array(df.amplitude))
+    gr_fitBG = ROOT.TF1("f", "pol2", f_minBG, f_maxBG)
+    gr_fitBG.SetParameters(-160.0, 0.015, -4.5e-7)
+    gr_fitBG.SetNpx(10000)
+    grBG.Fit(gr_fitBG, "QRS")
+    parBG = [gr_fitBG.GetParameter(k) for k in range(gr_fitBG.GetNpar())]
+    parBGE = [gr_fitBG.GetParError(k) for k in range(gr_fitBG.GetNpar())]
+    print(parBG)
+    print(parBGE)
+    grBG.SetMarkerStyle(7)
+    grBG.SetMarkerSize(10)
+    grBGplot.SetMarkerStyle(7)
+    grBGplot.SetMarkerSize(10)
+    grBG.SetTitle("fitting back ground")
+    grBG.GetXaxis().SetTitle("frequency [Hz]")
+    grBG.GetYaxis().SetTitle("amplitude [#muV/Hz]")
+    grBG.GetXaxis().SetLabelSize(0.06)
+    grBG.GetYaxis().SetLabelSize(0.06)
+    grBG.GetXaxis().SetTitleSize(0.07)
+    grBG.GetYaxis().SetTitleSize(0.07)
+    grBG.GetXaxis().SetTitleOffset(0.85)
+    grBG.GetYaxis().SetTitleOffset(0.6)
+
+    grBG.Draw("AP")
+    grBGplot.Draw("PL")
+    grBG.GetXaxis().SetRangeUser(f_minBG, f_maxBG)
+    grBG.GetYaxis().SetRangeUser(0.0, amp_max*1.5)
+    ROOT.gPad.SetTopMargin(0.1)
+    ROOT.gPad.SetBottomMargin(0.15)
+    ROOT.gPad.SetLeftMargin(0.1)
+    ROOT.gPad.SetRightMargin(0.05)
+    c.Update()
+
+    c.cd(2)
+    gr = ROOT.TGraph(len(df.freq), np.array(df.freq), np.array(df.amplitude))
+    # gr = ROOT.TGraph(len(freqBG), np.array(freqBG), np.array(ampBG))
+    grFit = ROOT.TF1("f", "[1]*[0]/(pow((x-[2]), 2) + [0]*[0]) + [3] + [4]*x + [5]*pow(x,2)", f_minBG, f_maxBG)
+    grFit.SetParameters(5.300703134755664, 5.808296699448432, 18391., -95.8629532294724, 0.010326628640125438, -2.7777627288466405e-07)
+    grFit.FixParameter(2, 18382.)
+    grFit.FixParameter(3, parBG[0])
+    grFit.FixParameter(4, parBG[1])
+    grFit.FixParameter(5, parBG[2])
+    gr.Fit(grFit, "QR")
+    par = [grFit.GetParameter(k) for k in range(grFit.GetNpar())]
+    parE = [grFit.GetParError(k) for k in range(grFit.GetNpar())]
+    parE[3] = parE[3] + parBGE[0]
+    parE[4] = parE[4] + parBGE[1]
+    parE[5] = parE[5] + parBGE[2]
+    print(par)
+    print(parE)
+    gr.Draw("APL")
+    # grBG.Draw("")
+    gr.GetXaxis().SetRangeUser(f_minBG, f_maxBG)
+    ROOT.gPad.SetTopMargin(0.1)
+    ROOT.gPad.SetBottomMargin(0.15)
+    ROOT.gPad.SetLeftMargin(0.1)
+    ROOT.gPad.SetRightMargin(0.05)
+    ROOT.gStyle.SetStatX(0.9)
+    ROOT.gStyle.SetStatY(0.8)
+    ROOT.gStyle.SetStatW(0.14)
+    ROOT.gStyle.SetStatH(0.2)
+    gr.SetTitle("fitting peak after BG subtraction")
+    gr.GetXaxis().SetTitle("frequency [Hz]")
+    gr.GetYaxis().SetTitle("amplitude [#muV/Hz]")
+    gr.GetXaxis().SetLabelSize(0.06)
+    gr.GetYaxis().SetLabelSize(0.06)
+    gr.GetXaxis().SetTitleSize(0.07)
+    gr.GetYaxis().SetTitleSize(0.07)
+    gr.GetXaxis().SetTitleOffset(0.85)
+    gr.GetYaxis().SetTitleOffset(0.6)
+    gr.GetYaxis().SetRangeUser(0.0, amp_max*1.5)
+    # gr.GetYaxis().SetRangeUser(0.0, par[1]/par[0]*1.5)
+    ROOT.gStyle.SetOptFit(1)
+    gr.SetMarkerStyle(7)
+    gr.SetMarkerSize(10)
+    # c1 = ROOT.gROOT.FindObject("c1")
+    c.Update()
+    c.Draw("same")
+    c.SaveAs("PeakFit.pdf")
+    # print(par[:2])
+    # integral = grFit.IntegralError(f_min, f_max, np.array(par[:3]), np.array(parE[:3]))
+    integral = gr_fitBG.Integral(f_min, f_max)
+    integral1 = grFit.Integral(f_min, f_max)
+    integralE = gr_fitBG.IntegralError(f_min, f_max, np.array(parBG), np.array(parBGE))
+    integralE1 = grFit.IntegralError(f_min, f_max, np.array(par), np.array(parE))
+    # integral = grFit.Integral(f_min, f_max)
+    print(integral)
+    print(integral1)
+    print(integralE)
+    print(integralE1)
+
 if __name__ == "__main__":
     DirPath = "./" + conf.DataDirectryName
-    FitFunc(DirPath, df)
+    # FitFunc(DirPath, df)
+    FitPeak(DirPath, df)
