@@ -223,21 +223,24 @@ def FitPeak(DirPath, df):
         j += 1
     amp_max = max(amp)
 
-    c = ROOT.TCanvas("c", "title", 900, 600)
-    #c2 = ROOT.TCanvas("c", "title", 900, 600)
-    c.Divide(1,2)
-    c.cd(1)
+    # c = ROOT.TCanvas("c", "title", 900, 600)
+    # #c2 = ROOT.TCanvas("c", "title", 900, 600)
+    # c.Divide(1,2)
+    # c.cd(1)
     
     grBG = ROOT.TGraph(len(freqBG), np.array(freqBG), np.array(ampBG))
     grBGplot = ROOT.TGraph(len(df.freq), np.array(df.freq), np.array(df.amplitude))
     gr_fitBG = ROOT.TF1("f", "pol2", f_minBG, f_maxBG)
     gr_fitBG.SetParameters(-160.0, 0.015, -4.5e-7)
     gr_fitBG.SetNpx(10000)
-    grBG.Fit(gr_fitBG, "QRS")
+    resultBG = grBG.Fit(gr_fitBG, "QRS")
+    fit_resultBG = ROOT.TFitResult(resultBG.Get())
+    cov_matrixBG = fit_resultBG.GetCovarianceMatrix()
+    cov_matrix_arrayBG = cov_matrixBG.GetMatrixArray()
     parBG = [gr_fitBG.GetParameter(k) for k in range(gr_fitBG.GetNpar())]
     parBGE = [gr_fitBG.GetParError(k) for k in range(gr_fitBG.GetNpar())]
-    print(parBG)
-    print(parBGE)
+    # print(parBG)
+    # print(parBGE)
     grBG.SetMarkerStyle(7)
     grBG.SetMarkerSize(10)
     grBGplot.SetMarkerStyle(7)
@@ -260,37 +263,61 @@ def FitPeak(DirPath, df):
     ROOT.gPad.SetBottomMargin(0.15)
     ROOT.gPad.SetLeftMargin(0.1)
     ROOT.gPad.SetRightMargin(0.05)
-    c.Update()
+    # c.Update()
 
-    c.cd(2)
+    # c.cd(2)
     gr = ROOT.TGraph(len(df.freq), np.array(df.freq), np.array(df.amplitude))
     # gr = ROOT.TGraph(len(freqBG), np.array(freqBG), np.array(ampBG))
     grFit = ROOT.TF1("f", "[1]*[0]/(pow((x-[2]), 2) + [0]*[0]) + [3] + [4]*x + [5]*pow(x,2)", f_minBG, f_maxBG)
-    grFit.SetParameters(5.300703134755664, 5.808296699448432, 18391., -95.8629532294724, 0.010326628640125438, -2.7777627288466405e-07)
-    grFit.FixParameter(2, 18382.)
+    # grFit.SetParameters(5.300703134755664, 5.808296699448432, 18391., -95.8629532294724, 0.010326628640125438, -2.7777627288466405e-07)
+    # grFit.SetParameters(5.300703134755664, 5.808296699448432, 18382., parBG[0], parBG[1], parBG[2])
+    # grFit.SetParameters(3.0, 2.050427771930654, 18391., parBG[0], parBG[1], parBG[2]) # for 0726 41-47
+    grFit.SetParameters(15.0, 10.0, 18397., parBG[0], parBG[1], parBG[2]) # for 0728 155ド.
+    # grFit.FixParameter(2, 18391.) # for 0727/test01-07
+    # grFit.FixParameter(2, 18385.) # for #0727/test11-18
+    # grFit.FixParameter(2, 18390.) #0727/test19-24
+    # grFit.FixParameter(2, 18388.) #0727/test25-31
+    # grFit.FixParameter(2, 18384.) #0727/test32-38
+    # grFit.FixParameter(2, 18397.) # for 155ド131Xe 0728
+    # grFit.FixParameter(2, 18935.) #129Xe
     grFit.FixParameter(3, parBG[0])
     grFit.FixParameter(4, parBG[1])
     grFit.FixParameter(5, parBG[2])
-    gr.Fit(grFit, "QR")
+    # gr.Fit(grFit, "QR")
+    grFit.SetNpx(10000)
+    result = gr.Fit(grFit, "QRS")
+    fit_result = ROOT.TFitResult(result.Get())
+    cov_matrix = fit_result.GetCovarianceMatrix()
+    cov_matrix_array = cov_matrix.GetMatrixArray()
+    # print(cov_matrix)
     par = [grFit.GetParameter(k) for k in range(grFit.GetNpar())]
     parE = [grFit.GetParError(k) for k in range(grFit.GetNpar())]
-    parE[3] = parE[3] + parBGE[0]
-    parE[4] = parE[4] + parBGE[1]
-    parE[5] = parE[5] + parBGE[2]
-    print(par)
-    print(parE)
+    fwhm = 2*par[0]
+    fwhmE = 2*parE[0]
+    T2 = 1/fwhm
+    T2E = fwhmE/fwhm**2
+    # parE = [grFit.GetParError(k) for k in range(grFit.GetNpar())]
+    # parE = grFit.GetCovarianceMatrix()
+    
+    # parE[3] = parE[3] + parBGE[0]
+    # parE[4] = parE[4] + parBGE[1]
+    # parE[5] = parE[5] + parBGE[2]
+    # print(par)
+    # print(parE)
     gr.Draw("APL")
     # grBG.Draw("")
     gr.GetXaxis().SetRangeUser(f_minBG, f_maxBG)
     ROOT.gPad.SetTopMargin(0.1)
     ROOT.gPad.SetBottomMargin(0.15)
-    ROOT.gPad.SetLeftMargin(0.1)
+    ROOT.gPad.SetLeftMargin(0.15)
     ROOT.gPad.SetRightMargin(0.05)
-    ROOT.gStyle.SetStatX(0.9)
-    ROOT.gStyle.SetStatY(0.8)
-    ROOT.gStyle.SetStatW(0.14)
-    ROOT.gStyle.SetStatH(0.2)
-    gr.SetTitle("fitting peak after BG subtraction")
+    ROOT.gStyle.SetOptFit(0000000000)
+    # ROOT.gStyle.SetStatX(0.9)
+    # ROOT.gStyle.SetStatY(0.8)
+    # ROOT.gStyle.SetStatW(0.14)
+    # ROOT.gStyle.SetStatH(0.2)
+    # gr.SetTitle("fitting peak after BG subtraction")
+    gr.SetTitle(" ")
     gr.GetXaxis().SetTitle("frequency [Hz]")
     gr.GetYaxis().SetTitle("amplitude [#muV/Hz]")
     gr.GetXaxis().SetLabelSize(0.06)
@@ -298,27 +325,38 @@ def FitPeak(DirPath, df):
     gr.GetXaxis().SetTitleSize(0.07)
     gr.GetYaxis().SetTitleSize(0.07)
     gr.GetXaxis().SetTitleOffset(0.85)
-    gr.GetYaxis().SetTitleOffset(0.6)
+    gr.GetYaxis().SetTitleOffset(0.8)
+    gr.GetXaxis().SetRangeUser(18100.0, 18700.)
     gr.GetYaxis().SetRangeUser(0.0, amp_max*1.5)
     # gr.GetYaxis().SetRangeUser(0.0, par[1]/par[0]*1.5)
     ROOT.gStyle.SetOptFit(1)
     gr.SetMarkerStyle(7)
     gr.SetMarkerSize(10)
-    # c1 = ROOT.gROOT.FindObject("c1")
+    c = ROOT.gROOT.FindObject("c1")
     c.Update()
     c.Draw("same")
-    c.SaveAs("PeakFit.pdf")
+    c.SaveAs(DirPath + "PeakFit.pdf")
+    # c.SaveAs("PeakFit.pdf")
     # print(par[:2])
     # integral = grFit.IntegralError(f_min, f_max, np.array(par[:3]), np.array(parE[:3]))
     integral = gr_fitBG.Integral(f_min, f_max)
     integral1 = grFit.Integral(f_min, f_max)
-    integralE = gr_fitBG.IntegralError(f_min, f_max, np.array(parBG), np.array(parBGE))
-    integralE1 = grFit.IntegralError(f_min, f_max, np.array(par), np.array(parE))
+    integralE = gr_fitBG.IntegralError(f_min, f_max, np.array(parBG), cov_matrix_arrayBG)
+    integralE1 = grFit.IntegralError(f_min, f_max, np.array(par), cov_matrix_array)
     # integral = grFit.Integral(f_min, f_max)
     print(integral)
     print(integral1)
     print(integralE)
     print(integralE1)
+    print(T2)
+    print(T2E)
+    peak = integral1 - integral
+    peakE = np.sqrt(integralE**2 + integralE1**2)
+
+    f=open(argvs[1],"a")
+    # f.write("%f %f %f %f %f\n" %(voltage, integral, par[0], par[1], par[2]))
+    f.write("%f %f %f\n" %(peak, peakE, T2))
+    f.close()
 
 if __name__ == "__main__":
     DirPath = "./" + conf.DataDirectryName

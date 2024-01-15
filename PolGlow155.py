@@ -3,9 +3,9 @@ import numpy as np
 import pandas as pd
 
 time = [0.0, 2., 4., 6., 8., 11., 13., 18., 28.]
-df155 = pd.read_table("./FIDPeakIntegral155_AbsPol.txt", names=["amp", "T2"], sep=" ")
+df155 = pd.read_table("./FIDAbsPol155.txt", names=["amp", "ampE", "T2"], sep=" ")
 
-gr100 = ROOT.TGraph(len(time), np.array(time), np.array(df155.amp))
+gr100 = ROOT.TGraphErrors(len(time), np.array(time), np.array(df155.amp), np.array([0.0 for i in range(len(time))]), np.array(df155.ampE))
 # gr100.SetMarkerStyle(22)
 # gr100.SetMarkerSize(1.4)
 gr100.SetMarkerStyle(20)
@@ -20,7 +20,9 @@ gr_fit100.SetTitle("100")
 gr_fit100.SetParameters(0.04, 3.) #for Absolute polarization
 gr100.Fit(gr_fit100, "QR")
 par100 = [gr_fit100.GetParameter(k) for k in range(gr_fit100.GetNpar())]
+par100E = [gr_fit100.GetParError(k) for k in range(gr_fit100.GetNpar())]
 print(par100)
+print(par100E)
 gr100.Draw("AP")
 gr100.SetTitle("")
 gr100.GetXaxis().SetTitle("time [s]")

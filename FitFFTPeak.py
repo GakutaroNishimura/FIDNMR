@@ -14,7 +14,7 @@ EndNum = StartNum + 7
 
 f=open(argvs[1],"a")
 # f.write("%f %f %f %f %f\n" %(voltage, integral, par[0], par[1], par[2]))
-f.write("%f %f\n" %(0.0, 0.0))
+f.write("%f %f %f\n" %(0.0, 0.0, 0.0))
 f.close()
 
 for i in range(StartNum, EndNum + 1):
@@ -27,6 +27,7 @@ for i in range(StartNum, EndNum + 1):
     # DataPath = conf.DataPath + "/ftdata2.csv"
     df = pd.read_csv(DataPath, names=["freq", "amplitude"])
 
-    func.FitFunc(DirPath, df)
+    # func.FitFunc(DirPath, df)
+    func.FitPeak(DirPath, df)
 
 #time.sleep(1000)
