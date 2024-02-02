@@ -30,14 +30,16 @@ if Save_or_View == "Save":
 #DataDirectryName = "/Data/2023/0614/129Xe_067A_18.3kHz/run1/"
 #DataDirectryName = "/Data/2023/0614/129Xe_010A_18.3kHz/run1/"
 #DataDirectryName = "/Data/2023/0614/129Xe_010A_19kHz/run5/"
-DataDirectryName = "/Data/2023/0728/test03/"
+# DataDirectryName = "/Data/2023/0728/test03/"
 # DataDirectryName = "/Data/2023/0721/test07/" #129Xe FID. EPRと一緒にとったやつ.
+DataDirectryName = "/Data/2023/0720/test18/" #129Xe FID. EPRと一緒にとったやつ.
+# DataDirectryName = "/Data/2023/0721/test01/" #129Xe
 
 HomePath         = os.path.expanduser("~")
 #DataPath         = HomePath + "/NMRProgram/AFPNMR_FS/" + DataDirectryName
 #DataName         = HomePath + "/FIDNMR/" + DataDirectryName + "floatData.txt"
-DataName         = HomePath + "/FIDNMR/" + DataDirectryName + "/10/" + "data.csv"
-DataPath         = HomePath + "/FIDNMR/" + DataDirectryName + "/10/"
+DataName         = HomePath + "/FIDNMR/" + DataDirectryName + "/1/" + "data.csv"
+DataPath         = HomePath + "/FIDNMR/" + DataDirectryName + "/1/"
 #GoogleDrivePath  = HomePath + "/マイドライブ/" + DataDirectryName
 
 # File name

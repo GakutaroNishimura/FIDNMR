@@ -16,17 +16,17 @@ SignalPath = conf.DataPath + "data.csv"
 df_Peak = pd.read_csv(PeakPath, names=["freq", "amplitude"])
 df_Signal = pd.read_csv(SignalPath, names=["time", "voltage"])
 
-f_0 = 18400.0
-f_min = f_0-400.0
-f_max = f_0+400.0
+# f_0 = 18400.0
+# f_min = f_0-400.0
+# f_max = f_0+400.0
 
 # f_0 = 18920.0
 # f_min = f_0-150.0
 # f_max = f_0+150.0
 
-# f_0 = 18920.0
-# f_min = f_0-400.0
-# f_max = f_0+400.0
+f_0 = 18920.0
+f_min = f_0-400.0
+f_max = f_0+400.0
 
 c = ROOT.TCanvas("c", "title", 900, 600)
 c.Divide(1,2)

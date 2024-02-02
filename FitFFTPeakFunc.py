@@ -271,8 +271,8 @@ def FitPeak(DirPath, df):
     grFit = ROOT.TF1("f", "[1]*[0]/(pow((x-[2]), 2) + [0]*[0]) + [3] + [4]*x + [5]*pow(x,2)", f_minBG, f_maxBG)
     # grFit.SetParameters(5.300703134755664, 5.808296699448432, 18391., -95.8629532294724, 0.010326628640125438, -2.7777627288466405e-07)
     # grFit.SetParameters(5.300703134755664, 5.808296699448432, 18382., parBG[0], parBG[1], parBG[2])
-    # grFit.SetParameters(3.0, 2.050427771930654, 18391., parBG[0], parBG[1], parBG[2]) # for 0726 41-47
-    grFit.SetParameters(15.0, 10.0, 18397., parBG[0], parBG[1], parBG[2]) # for 0728 155ド.
+    grFit.SetParameters(3.0, 2.050427771930654, 18391., parBG[0], parBG[1], parBG[2]) # for 0726 41-47
+    # grFit.SetParameters(15.0, 10.0, 18397., parBG[0], parBG[1], parBG[2]) # for 0728 155ド./
     # grFit.FixParameter(2, 18391.) # for 0727/test01-07
     # grFit.FixParameter(2, 18385.) # for #0727/test11-18
     # grFit.FixParameter(2, 18390.) #0727/test19-24
